@@ -4,14 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,31 +21,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
-import com.example.musa.books.AppExecutors.AppExecutor;
 import com.example.musa.books.Database.VolumeDatabase;
-import com.example.musa.books.Dummy.AvailableBooks;
-import com.example.musa.books.Dummy.Item;
 import com.example.musa.books.R;
-import com.example.musa.books.Retrofit.RetrofitBuilder;
-import com.example.musa.books.Retrofit.UrlCall;
 import com.example.musa.books.Services.BooksService;
 import com.example.musa.books.Services.Job;
 import com.example.musa.books.ViewModels.MainViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
-
-public class BooksAvailableFragment extends Fragment implements MyBooksAvailableRecyclerViewAdapter.OnclickLIstener {
+public class BooksAvailableFragment extends Fragment implements MyBooksAvailableRecyclerViewAdapter.OnclickListener {
 
     // TODO: Customize parameters
    RecyclerView recyclerView;
@@ -88,7 +72,7 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
 
 
     @Override
-    public void OncardClick(String Uri) {
+    public void OnCardClick(String Uri) {
         Intent intent=new Intent(Intent.ACTION_VIEW);
         intent.setData(android.net.Uri.parse(Uri));
         startActivity(intent);

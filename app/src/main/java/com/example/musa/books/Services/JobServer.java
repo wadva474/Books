@@ -4,16 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.musa.books.Dummy.AvailableBooks;
-import com.example.musa.books.Retrofit.RetrofitBuilder;
-import com.example.musa.books.Retrofit.UrlCall;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class JobServer extends JobService {
     private AsyncTask<Void, Void, Void> mFetchWeatherTask;
@@ -24,7 +16,7 @@ public class JobServer extends JobService {
             @Override
             protected Void doInBackground(Void... voids) {
                 Context context = getApplicationContext();
-                BooksSyncing.BookSyncing(context);
+                BooksSyncing.bookSyncing(context);
                 return null;
             }
 

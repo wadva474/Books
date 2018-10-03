@@ -8,13 +8,13 @@ import java.util.concurrent.Executors;
 import java.util.logging.Handler;
 
 public class AppExecutor {
-    public Executor DataIO;
-    public Executor NetworkIO;
-    public Executor MainThreadIO;
-    public static AppExecutor Sinstance;
-    public static Object Lock = new Object();
+    private  Executor DataIO;
+    private  Executor NetworkIO;
+    private  Executor MainThreadIO;
+    private  static AppExecutor Sinstance;
+    private  static Object Lock = new Object();
 
-    public AppExecutor(Executor dataIO, Executor networkIO, Executor mainThreadIO) {
+    private  AppExecutor(Executor dataIO, Executor networkIO, Executor mainThreadIO) {
         DataIO = dataIO;
         NetworkIO = networkIO;
         MainThreadIO = mainThreadIO;

@@ -20,8 +20,9 @@ import android.widget.TextView;
 
 import com.devs.readmoreoption.ReadMoreOption;
 import com.example.musa.books.AppExecutors.AppExecutor;
+import com.example.musa.books.Database.BooksDatabase;
+import com.example.musa.books.Database.FavouriteDatabase;
 import com.example.musa.books.Database.VolumeDatabase;
-import com.example.musa.books.Dummy.Item;
 import com.example.musa.books.R;
 import com.squareup.picasso.Picasso;
 
@@ -29,16 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksAvailableRecyclerViewAdapter.ViewHolder> implements Filterable {
+public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksAvailableRecyclerViewAdapter.ViewHolder> implements  Filterable  {
 
-   public static List<VolumeDatabase>mitems;
-    private OnclickLIstener lIstener;
-    private Context mcontext;
+   private  static List<VolumeDatabase> mItems;
+    private OnclickListener listener;
+    private Context mContext;
 
 
-    public MyBooksAvailableRecyclerViewAdapter(  Context mcontext,OnclickLIstener lIstener) {
-        this.lIstener = lIstener;
-        this.mcontext = mcontext;
+    public MyBooksAvailableRecyclerViewAdapter(Context mContext, OnclickListener listener) {
+        this.listener = listener;
+        this.mContext = mContext;
     }
 
     @NonNull
@@ -51,22 +52,20 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        holder.mTitleView.setText(mitems.get(position).getTitle());
-        ReadMoreOption readMoreOption = new ReadMoreOption.Builder(mcontext)
-                .textLength(300)
+        holder.mTitleView.setText(mItems.get(position).getTitle());
+        ReadMoreOption readMoreOption = new ReadMoreOption.Builder(mContext)
+                .textLength(150)
                 .moreLabel("read more")
                 .lessLabel("less")
-                .moreLabelColor(Color.GREEN)
+                .moreLabelColor(Color.RED)
                 .lessLabelColor(Color.BLUE)
                 .labelUnderLine(true)
                 .build();
-        readMoreOption.addReadMoreTo(holder.mAuthorView,mitems.get(position).getDescription());
+        readMoreOption.addReadMoreTo(holder.mAuthorView, mItems.get(position).getDescription());
 
-       Picasso.with(mcontext).load(Uri.parse( mitems.get(position).getImageUrl()).buildUpon().build()).fit().into(holder.imageView);
-       holder.Popup.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               android.support.v7.widget.PopupMenu popupMenu=new android.support.v7.widget.PopupMenu(mcontext,v.findViewById(R.id.appCompatImageButton));
+       Picasso.with(mContext).load(Uri.parse( mItems.get(position).getImageUrl()).buildUpon().build()).fit().into(holder.imageView);
+
+               android.support.v7.widget.PopupMenu popupMenu=new android.support.v7.widget.PopupMenu(mContext,holder.Popup);
                popupMenu.getMenuInflater().inflate(R.menu.popupmenu,popupMenu.getMenu());
                popupMenu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener() {
                    @Override
@@ -77,7 +76,10 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
                                AppExecutor.getSinstance().getDataIO().execute(new Runnable() {
                                    @Override
                                    public void run() {
-
+                                       BooksDatabase.getsInstance(mContext).favouriteDao().insertFavourite
+                                               (new FavouriteDatabase(mItems.get(holder.getAdapterPosition()).getImageUrl()
+                                               , mItems.get(holder.getAdapterPosition()).getTitle()
+                                               , mItems.get(holder.getAdapterPosition()).getWebLink(), mItems.get(holder.getAdapterPosition()).getDescription()));
                                    }
                                });
                        }
@@ -86,22 +88,20 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
                });
 
            }
-       });
-    }
 
     public static List<VolumeDatabase> getMitems() {
-        return mitems;
+        return mItems;
     }
 
     public  void setMitems(List<VolumeDatabase> mitems) {
-        MyBooksAvailableRecyclerViewAdapter.mitems = mitems;
+        MyBooksAvailableRecyclerViewAdapter.mItems = mitems;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (mitems!=null){
-            return mitems.size();
+        if (mItems !=null){
+            return mItems.size();
         }
         else
         return 0;
@@ -112,36 +112,35 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                String search =constraint.toString();
-                if (search.isEmpty()){
-                    mitems=getMitems();
+                String charString =constraint.toString();
+                if (charString.isEmpty()){
+                   setMitems(mItems);
                 }
                 else {
-                    List<VolumeDatabase> booksvolume =new ArrayList<>();
-                    for (VolumeDatabase row : mitems){
-                        if (row.getTitle().toLowerCase().contains(search.toLowerCase())){
-                            booksvolume.add(row);
+                    List<VolumeDatabase>filteredList=new ArrayList<>();
+                    for (VolumeDatabase row :mItems){
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())){
+                            filteredList.add(row);
                         }
+                        setMitems(filteredList);
                     }
-                    setMitems(booksvolume);
                 }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = mitems;
+                FilterResults filterResults=new FilterResults();
+                filterResults.values=mItems;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                setMitems((ArrayList<VolumeDatabase>)results.values);
+                mItems= (List<VolumeDatabase>) results.values;
                 notifyDataSetChanged();
-
             }
         };
-
     }
 
-    public interface OnclickLIstener{
-        void OncardClick(String Uri);
+
+    public interface OnclickListener {
+        void OnCardClick(String Uri);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -163,8 +162,8 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
         @Override
         public void onClick(View v) {
             if (v==itemView) {
-                String Uri = mitems.get(getAdapterPosition()).getWebLink();
-                lIstener.OncardClick(Uri);
+                String Uri = mItems.get(getAdapterPosition()).getWebLink();
+                listener.OnCardClick(Uri);
             }
 
         }

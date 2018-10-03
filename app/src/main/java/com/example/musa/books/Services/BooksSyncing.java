@@ -2,6 +2,8 @@ package com.example.musa.books.Services;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.widget.Toast;
 
 import com.example.musa.books.AppExecutors.AppExecutor;
 import com.example.musa.books.Database.BooksDatabase;
@@ -22,7 +24,7 @@ import retrofit2.Retrofit;
 public class BooksSyncing {
 
 
-    public static void   BookSyncing( @NonNull final Context context) {
+    public static void bookSyncing(@NonNull final Context context) {
 
         Retrofit retrofit = RetrofitBuilder.Builder();
         UrlCall urlCall = retrofit.create(UrlCall.class);
@@ -62,7 +64,7 @@ public class BooksSyncing {
 
             @Override
             public void onFailure(Call<AvailableBooks> call, Throwable t) {
-
+              Toast.makeText(context ,t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
 

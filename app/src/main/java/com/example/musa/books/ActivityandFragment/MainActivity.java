@@ -46,31 +46,27 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-//        MenuItem search = menu.findItem(R.id.action_search);
-//        final  SearchView searchActionView = (SearchView) search.getActionView();
-//        searchActionView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                BooksAvailableFragment booksAvailableFragment=new BooksAvailableFragment();
-//                booksAvailableFragment.adapter.getFilter().filter(query);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                BooksAvailableFragment booksAvailableFragment=new BooksAvailableFragment();
-//                booksAvailableFragment.adapter.getFilter().filter(newText);
-//                return false;
-//            }
-//        });
+       MenuItem search = menu.findItem(R.id.action_search);
+        final  SearchView searchActionView = (SearchView) search.getActionView();
+        searchActionView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                BooksAvailableFragment booksAvailableFragment=new BooksAvailableFragment();
+                booksAvailableFragment.adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                BooksAvailableFragment booksAvailableFragment=new BooksAvailableFragment();
+                booksAvailableFragment.adapter.getFilter().filter(newText);
+                return false; }
+        });
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id){
             case R.id.action_settings:
