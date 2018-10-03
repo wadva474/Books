@@ -1,7 +1,10 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import java.util.List;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
@@ -10,7 +13,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class VolumeInfo implements Parcelable
 {
-
     @SerializedName("title")
     @Expose
     private String title;
@@ -61,7 +63,14 @@ public class VolumeInfo implements Parcelable
     private String contentVersion;
     @SerializedName("imageLinks")
     @Expose
-    private ImageLinks imageLinks;
+    private ImageLinks  /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */imageLinks;
     @SerializedName("language")
     @Expose
     private String language;
@@ -77,7 +86,7 @@ public class VolumeInfo implements Parcelable
     @SerializedName("panelizationSummary")
     @Expose
     private PanelizationSummary panelizationSummary;
-    public final static Parcelable.Creator<VolumeInfo> CREATOR = new Creator<VolumeInfo>() {
+    public final static Creator<VolumeInfo> CREATOR = new Creator<VolumeInfo>() {
 
 
         @SuppressWarnings({
@@ -90,22 +99,20 @@ public class VolumeInfo implements Parcelable
         public VolumeInfo[] newArray(int size) {
             return (new VolumeInfo[size]);
         }
-
-    }
-    ;
+    };
 
     protected VolumeInfo(Parcel in) {
         this.title = ((String) in.readValue((String.class.getClassLoader())));
         this.subtitle = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.authors, (java.lang.String.class.getClassLoader()));
+        in.readList(this.authors, (String.class.getClassLoader()));
         this.publisher = ((String) in.readValue((String.class.getClassLoader())));
         this.publishedDate = ((String) in.readValue((String.class.getClassLoader())));
         this.description = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.industryIdentifiers, (com.example.musa.books.IndustryIdentifier.class.getClassLoader()));
+        in.readList(this.industryIdentifiers, (com.example.musa.books.Dummy.IndustryIdentifier.class.getClassLoader()));
         this.readingModes = ((ReadingModes) in.readValue((ReadingModes.class.getClassLoader())));
         this.pageCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.printType = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.categories, (java.lang.String.class.getClassLoader()));
+        in.readList(this.categories, (String.class.getClassLoader()));
         this.averageRating = ((Double) in.readValue((Double.class.getClassLoader())));
         this.ratingsCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.maturityRating = ((String) in.readValue((String.class.getClassLoader())));
@@ -120,6 +127,8 @@ public class VolumeInfo implements Parcelable
     }
 
     public VolumeInfo() {
+
+
     }
 
     public String getTitle() {
@@ -297,6 +306,7 @@ public class VolumeInfo implements Parcelable
     public void setPanelizationSummary(PanelizationSummary panelizationSummary) {
         this.panelizationSummary = panelizationSummary;
     }
+
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(title);

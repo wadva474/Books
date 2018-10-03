@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -40,7 +40,7 @@ public class AccessInfo implements Parcelable
     @SerializedName("quoteSharingAllowed")
     @Expose
     private Boolean quoteSharingAllowed;
-    public final static Parcelable.Creator<AccessInfo> CREATOR = new Creator<AccessInfo>() {
+    public final static Creator<AccessInfo> CREATOR = new Creator<AccessInfo>() {
 
 
         @SuppressWarnings({

@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ public class PanelizationSummary implements Parcelable
     @SerializedName("containsImageBubbles")
     @Expose
     private Boolean containsImageBubbles;
-    public final static Parcelable.Creator<PanelizationSummary> CREATOR = new Creator<PanelizationSummary>() {
+    public final static Creator<PanelizationSummary> CREATOR = new Creator<PanelizationSummary>() {
 
 
         @SuppressWarnings({

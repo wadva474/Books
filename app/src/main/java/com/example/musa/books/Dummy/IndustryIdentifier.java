@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ public class IndustryIdentifier implements Parcelable
     @SerializedName("identifier")
     @Expose
     private String identifier;
-    public final static Parcelable.Creator<IndustryIdentifier> CREATOR = new Creator<IndustryIdentifier>() {
+    public final static Creator<IndustryIdentifier> CREATOR = new Creator<IndustryIdentifier>() {
 
 
         @SuppressWarnings({

@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,7 +19,7 @@ public class SaleInfo implements Parcelable
     @SerializedName("isEbook")
     @Expose
     private Boolean isEbook;
-    public final static Parcelable.Creator<SaleInfo> CREATOR = new Creator<SaleInfo>() {
+    public final static Creator<SaleInfo> CREATOR = new Creator<SaleInfo>() {
 
 
         @SuppressWarnings({

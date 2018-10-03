@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ public class ReadingModes implements Parcelable
     @SerializedName("image")
     @Expose
     private Boolean image;
-    public final static Parcelable.Creator<ReadingModes> CREATOR = new Creator<ReadingModes>() {
+    public final static Creator<ReadingModes> CREATOR = new Creator<ReadingModes>() {
 
 
         @SuppressWarnings({

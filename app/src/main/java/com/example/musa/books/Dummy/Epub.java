@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ public class Epub implements Parcelable
     @SerializedName("acsTokenLink")
     @Expose
     private String acsTokenLink;
-    public final static Parcelable.Creator<Epub> CREATOR = new Creator<Epub>() {
+    public final static Creator<Epub> CREATOR = new Creator<Epub>() {
 
 
         @SuppressWarnings({

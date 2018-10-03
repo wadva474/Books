@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import java.util.List;
 import android.os.Parcel;
@@ -20,7 +20,7 @@ public class AvailableBooks implements Parcelable
     @SerializedName("items")
     @Expose
     private List<Item> items = null;
-    public final static Parcelable.Creator<AvailableBooks> CREATOR = new Creator<AvailableBooks>() {
+    public final static Creator<AvailableBooks> CREATOR = new Creator<AvailableBooks>() {
 
 
         @SuppressWarnings({
@@ -40,7 +40,7 @@ public class AvailableBooks implements Parcelable
     protected AvailableBooks(Parcel in) {
         this.kind = ((String) in.readValue((String.class.getClassLoader())));
         this.totalItems = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.items, (com.example.musa.books.Item.class.getClassLoader()));
+        in.readList(this.items, (com.example.musa.books.Dummy.Item.class.getClassLoader()));
     }
 
     public AvailableBooks() {

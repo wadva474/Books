@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ public class Pdf implements Parcelable
     @SerializedName("acsTokenLink")
     @Expose
     private String acsTokenLink;
-    public final static Parcelable.Creator<Pdf> CREATOR = new Creator<Pdf>() {
+    public final static Creator<Pdf> CREATOR = new Creator<Pdf>() {
 
 
         @SuppressWarnings({

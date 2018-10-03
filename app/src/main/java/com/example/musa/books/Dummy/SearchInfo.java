@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,7 +13,7 @@ public class SearchInfo implements Parcelable
     @SerializedName("textSnippet")
     @Expose
     private String textSnippet;
-    public final static Parcelable.Creator<SearchInfo> CREATOR = new Creator<SearchInfo>() {
+    public final static Creator<SearchInfo> CREATOR = new Creator<SearchInfo>() {
 
 
         @SuppressWarnings({

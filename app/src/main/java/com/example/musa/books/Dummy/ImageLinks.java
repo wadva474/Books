@@ -1,5 +1,5 @@
 
-package com.example.musa.books;
+package com.example.musa.books.Dummy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ public class ImageLinks implements Parcelable
     @SerializedName("thumbnail")
     @Expose
     private String thumbnail;
-    public final static Parcelable.Creator<ImageLinks> CREATOR = new Creator<ImageLinks>() {
+    public final static Creator<ImageLinks> CREATOR = new Creator<ImageLinks>() {
 
 
         @SuppressWarnings({
