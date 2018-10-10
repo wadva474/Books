@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,13 +24,12 @@ import com.example.musa.books.Database.VolumeDatabase;
 import com.example.musa.books.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksAvailableRecyclerViewAdapter.ViewHolder> implements  Filterable  {
+public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<MyBooksAvailableRecyclerViewAdapter.ViewHolder>{
 
-   private  static List<VolumeDatabase> mItems;
+   public   static List<VolumeDatabase> mItems;
     private OnclickListener listener;
     private Context mContext;
 
@@ -64,28 +61,34 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
         readMoreOption.addReadMoreTo(holder.mAuthorView, mItems.get(position).getDescription());
 
        Picasso.with(mContext).load(Uri.parse( mItems.get(position).getImageUrl()).buildUpon().build()).fit().into(holder.imageView);
+        holder.Popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v7.widget.PopupMenu popupMenu=new android.support.v7.widget.PopupMenu(mContext,holder.Popup);
+                popupMenu.getMenuInflater().inflate(R.menu.popupmenu,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id =item.getItemId();
+                        switch (id){
+                            case R.id.addToFavourite:
+                                AppExecutor.getSinstance().getDataIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        BooksDatabase.getsInstance(mContext).favouriteDao().insertFavourite
+                                                (new FavouriteDatabase(mItems.get(holder.getAdapterPosition()).getImageUrl()
+                                                        , mItems.get(holder.getAdapterPosition()).getTitle()
+                                                        , mItems.get(holder.getAdapterPosition()).getWebLink(), mItems.get(holder.getAdapterPosition()).getDescription()));
+                                    }
+                                });
+                        }
+                        return true;
+                    }
+                });
 
-               android.support.v7.widget.PopupMenu popupMenu=new android.support.v7.widget.PopupMenu(mContext,holder.Popup);
-               popupMenu.getMenuInflater().inflate(R.menu.popupmenu,popupMenu.getMenu());
-               popupMenu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener() {
-                   @Override
-                   public boolean onMenuItemClick(MenuItem item) {
-                       int id =item.getItemId();
-                       switch (id){
-                           case R.id.addToFavourite:
-                               AppExecutor.getSinstance().getDataIO().execute(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       BooksDatabase.getsInstance(mContext).favouriteDao().insertFavourite
-                                               (new FavouriteDatabase(mItems.get(holder.getAdapterPosition()).getImageUrl()
-                                               , mItems.get(holder.getAdapterPosition()).getTitle()
-                                               , mItems.get(holder.getAdapterPosition()).getWebLink(), mItems.get(holder.getAdapterPosition()).getDescription()));
-                                   }
-                               });
-                       }
-                       return true;
-                   }
-               });
+            }
+        });
+
 
            }
 
@@ -107,40 +110,10 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
         return 0;
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String charString =constraint.toString();
-                if (charString.isEmpty()){
-                   setMitems(mItems);
-                }
-                else {
-                    List<VolumeDatabase>filteredList=new ArrayList<>();
-                    for (VolumeDatabase row :getMitems()){
-                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())){
-                            filteredList.add(row);
-                        }
-                        setMitems(filteredList);
-                    }
-                }
-                FilterResults filterResults=new FilterResults();
-                filterResults.values=mItems;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                mItems= (List<VolumeDatabase>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
 
 
     public interface OnclickListener {
-        void OnCardClick(String Uri);
+        void onCardClick(String Uri);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -163,7 +136,7 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
         public void onClick(View v) {
             if (v==itemView) {
                 String Uri = mItems.get(getAdapterPosition()).getWebLink();
-                listener.OnCardClick(Uri);
+                listener.onCardClick(Uri);
             }
 
         }

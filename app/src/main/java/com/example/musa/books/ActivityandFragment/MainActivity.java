@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.musa.books.ActivityandFragment.BooksAvailableFragment;
+import com.example.musa.books.Database.BooksDatabase;
 import com.example.musa.books.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
         searchActionView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                BooksAvailableFragment booksAvailableFragment=new BooksAvailableFragment();
-                booksAvailableFragment.adapter.getFilter().filter(query);
+
                 return false;
             }
 

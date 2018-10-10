@@ -22,12 +22,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.musa.books.Database.BooksDatabase;
 import com.example.musa.books.Database.VolumeDatabase;
 import com.example.musa.books.R;
 import com.example.musa.books.Services.BooksService;
 import com.example.musa.books.Services.Job;
 import com.example.musa.books.ViewModels.MainViewModel;
+import com.example.musa.books.ViewModels.SearchViewModel;
+import com.example.musa.books.ViewModels.SearchViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +41,7 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
     // TODO: Customize parameters
    RecyclerView recyclerView;
     public MyBooksAvailableRecyclerViewAdapter adapter;
+    private BooksDatabase booksDatabase;
 
 
 
@@ -52,6 +57,7 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booksavailable_list, container, false);
         recyclerView=view.findViewById(R.id.recyclerview);
+        booksDatabase=BooksDatabase.getsInstance(getContext());
         setHasOptionsMenu(true);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -60,7 +66,7 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
         DividerItemDecoration decoration=new DividerItemDecoration(Objects.requireNonNull(getContext()),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(decoration);
         recyclerView.hasFixedSize();
-        SetupViewModel();
+        setupViewModel();
         if (adapter.getItemCount()==0){
             startImmediateSync(getContext());
         }
@@ -70,7 +76,7 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
 
 
     @Override
-    public void OnCardClick(String Uri) {
+    public void onCardClick(String Uri) {
         Intent intent=new Intent(Intent.ACTION_VIEW);
         intent.setData(android.net.Uri.parse(Uri));
         startActivity(intent);
@@ -86,20 +92,20 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
-                return false;
+                setupSearchViewModel(query,booksDatabase);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return false;
+               setupSearchViewModel(newText,booksDatabase);
+                return true;
             }
         });
     }
 
 
-    public void SetupViewModel(){
+    public void setupViewModel(){
         MainViewModel mainViewModel= ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.getBooksLivedata().observe(this, new Observer<List<VolumeDatabase>>() {
             @Override
@@ -107,6 +113,17 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
                adapter.setMitems(volumeDatabases);
             }
         });
+    }
+    public void setupSearchViewModel(String searched,BooksDatabase booksDatabase){
+        SearchViewModelFactory searchViewModelFactory=new SearchViewModelFactory(booksDatabase,searched);
+        SearchViewModel searchViewModel=searchViewModelFactory.create(SearchViewModel.class);
+        searchViewModel.getSearchLiveData().observe(this, new Observer<ArrayList<VolumeDatabase>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<VolumeDatabase> volumeDatabases) {
+                adapter.setMitems(volumeDatabases);
+            }
+        });
+
     }
 
     public static void startImmediateSync(@NonNull final Context context) {
