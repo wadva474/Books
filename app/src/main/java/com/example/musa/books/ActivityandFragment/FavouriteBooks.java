@@ -1,7 +1,6 @@
 package com.example.musa.books.ActivityandFragment;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import com.example.musa.books.R;
 
 /**
  * A simple {@link Fragment} subclass.
- *
  */
 public class FavouriteBooks extends Fragment {
 

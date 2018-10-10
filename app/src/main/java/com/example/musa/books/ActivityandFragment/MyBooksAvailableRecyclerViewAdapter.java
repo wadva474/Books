@@ -118,7 +118,7 @@ public class MyBooksAvailableRecyclerViewAdapter extends RecyclerView.Adapter<My
                 }
                 else {
                     List<VolumeDatabase>filteredList=new ArrayList<>();
-                    for (VolumeDatabase row :mItems){
+                    for (VolumeDatabase row :getMitems()){
                         if (row.getTitle().toLowerCase().contains(charString.toLowerCase())){
                             filteredList.add(row);
                         }

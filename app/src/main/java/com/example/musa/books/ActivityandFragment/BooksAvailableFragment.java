@@ -36,8 +36,6 @@ public class BooksAvailableFragment extends Fragment implements MyBooksAvailable
 
     // TODO: Customize parameters
    RecyclerView recyclerView;
-    private String BookSearch;
-    private Context context=getContext();
     public MyBooksAvailableRecyclerViewAdapter adapter;
 
 

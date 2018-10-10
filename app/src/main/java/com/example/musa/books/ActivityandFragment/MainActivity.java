@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment=new BooksAvailableFragment();
                 break;
                 case 1:
-                    fragment= new BooksAvailableFragment();
+                    fragment= new FavouriteBooks();
                 break;
             }
             return fragment;
